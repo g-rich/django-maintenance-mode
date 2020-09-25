@@ -11,6 +11,7 @@ else:
     from django.urls import (
         NoReverseMatch, resolve, Resolver404, reverse, )
 
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.template import RequestContext
 from django.utils.cache import add_never_cache_headers
@@ -56,9 +57,19 @@ def get_maintenance_response(request):
     if django.VERSION < (1, 8):
         kwargs = {'context_instance': RequestContext(request, context)}
 
-    response = render(request, settings.MAINTENANCE_MODE_TEMPLATE,
-                      status=settings.MAINTENANCE_MODE_STATUS_CODE,
-                      **kwargs)
+    if settings.MAINTENANCE_MODE_RETURN_JSON:
+        if not isinstance(context, dict):
+            raise ImproperlyConfigured(
+                'context is not returning a dict check '
+                'settings.MAINTENANCE_MODE_GET_TEMPLATE_CONTEXT if set'
+            )
+
+        response = JsonResponse(context, status=settings.MAINTENANCE_MODE_STATUS_CODE)
+    else:
+        response = render(request, settings.MAINTENANCE_MODE_TEMPLATE,
+                        status=settings.MAINTENANCE_MODE_STATUS_CODE,
+                        **kwargs)
+
     response['Retry-After'] = settings.MAINTENANCE_MODE_RETRY_AFTER
     add_never_cache_headers(response)
     return response

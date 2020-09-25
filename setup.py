@@ -7,7 +7,7 @@ import os
 
 exec(open('maintenance_mode/version.py').read())
 
-github_url = 'https://github.com/fabiocaccamo'
+github_url = 'https://github.com/g-rich/django-maintenance-mode'
 package_name = 'django-maintenance-mode'
 package_url = '{}/{}'.format(github_url, package_name)
 package_path = os.path.abspath(os.path.dirname(__file__))

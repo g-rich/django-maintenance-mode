@@ -113,12 +113,18 @@ MAINTENANCE_MODE_REDIRECT_URL = None
 ```
 
 ```python
+# return json in maintenance mode response
+MAINTENANCE_MODE_RETURN_JSON = True
+```
+
+```python
 # the template that will be shown by the maintenance-mode page
 MAINTENANCE_MODE_TEMPLATE = '503.html'
 ```
 
 ```python
 # the path of the function that will return the template context -> 'myapp.mymodule.myfunction'
+# if MAINTENANCE_MODE_RETURN_JSON = True this function should return a dict
 MAINTENANCE_MODE_GET_TEMPLATE_CONTEXT = None
 ```
 
